@@ -1,0 +1,101 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Search</title>
+  <style>
+    :root { --fg:#202124; --muted:#5f6368; --bg:#fff; --card:#fff; --border:#e0e0e0; }
+    @media (prefers-color-scheme: dark) {
+      :root { --fg:#e8eaed; --muted:#9aa0a6; --bg:#121212; --card:#1e1e1e; --border:#2a2a2a; }
+    }
+    html,body { height:100%; }
+    body {
+      margin:0; font:16px/1.5 system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+      color:var(--fg); background:var(--bg); display:grid; place-items:center;
+    }
+    .wrap { width:min(640px, 92vw); text-align:center; }
+    .brand { font-size:56px; letter-spacing:0.5px; font-weight:700; margin:0 0 24px; }
+    .brand span:nth-child(1){color:#4285F4}
+    .brand span:nth-child(2){color:#EA4335}
+    .brand span:nth-child(3){color:#FBBC05}
+    .brand span:nth-child(4){color:#4285F4}
+    .brand span:nth-child(5){color:#34A853}
+    .brand span:nth-child(6){color:#EA4335}
+    form { margin:0 auto; }
+    .search {
+      display:flex; align-items:center; gap:10px;
+      background:var(--card); border:1px solid var(--border); border-radius:999px;
+      padding:10px 14px; transition:border .15s ease, box-shadow .15s ease;
+    }
+    .search:focus-within { border-color:#8ab4f8; box-shadow:0 0 0 4px rgba(138,180,248,.25); }
+    .search input {
+      flex:1; border:0; outline:0; background:transparent; color:var(--fg);
+      font-size:16px;
+    }
+    .btns { margin-top:24px; display:flex; gap:10px; justify-content:center; flex-wrap:wrap; }
+    button, .ghost {
+      border:1px solid var(--border); background:var(--card); color:var(--fg);
+      padding:8px 14px; border-radius:8px; cursor:pointer;
+    }
+    button:hover, .ghost:hover { border-color:#c6dafc; }
+    .hint { margin-top:14px; color:var(--muted); font-size:13px; }
+    .kbd { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; padding:2px 6px; border:1px solid var(--border); border-radius:6px; }
+  </style>
+</head>
+<body>
+  <main class="wrap">
+    <!-- Simple text styling to avoid using a trademarked logo -->
+    <h1 class="brand" aria-label="Google-like heading">
+      <span>G</span><span>o</span><span>o</span><span>g</span><span>l</span><span>e</span>
+    </h1>
+
+    <!-- Standard Google search GET form: q is the query parameter -->
+    <form id="search-form" action="https://www.google.com/search" method="get" role="search">
+      <div class="search">
+        <input
+          type="text"
+          name="q"
+          id="q"
+          placeholder="Search Google or type a URL"
+          autocomplete="on"
+          autofocus
+          aria-label="Search"
+          required
+        />
+      </div>
+      <div class="btns">
+        <button type="submit">Google Search</button>
+        <!-- "I'm Feeling Lucky" works by adding btnI=1 -->
+        <a class="ghost" href="#" id="lucky">I'm Feeling Lucky</a>
+      </div>
+      <p class="hint">Tip: Press <span class="kbd">Enter</span> to search, or <span class="kbd">Alt/Option</span> + <span class="kbd">Enter</span> to open results in a new tab.</p>
+    </form>
+  </main>
+
+  <script>
+    // Support "I'm Feeling Lucky"
+    document.getElementById('lucky').addEventListener('click', function (e) {
+      e.preventDefault();
+      const q = document.getElementById('q').value.trim();
+      if (!q) { document.getElementById('q').focus(); return; }
+      const u = new URL('https://www.google.com/search');
+      u.searchParams.set('q', q);
+      u.searchParams.set('btnI', '1');
+      window.location.href = u.toString();
+    });
+
+    // Optional: Alt/Option + Enter opens results in a new tab
+    document.getElementById('search-form').addEventListener('keydown', function (e) {
+      if (e.key === 'Enter' && (e.altKey || e.metaKey)) {
+        e.preventDefault();
+        const q = document.getElementById('q').value.trim();
+        if (!q) return;
+        const u = new URL('https://www.google.com/search');
+        u.searchParams.set('q', q);
+        window.open(u.toString(), '_blank');
+      }
+    });
+  </script>
+</body>
+</html>
