@@ -97,5 +97,25 @@
       }
     });
   </script>
+  <script type='text/javascript'>
+	function initEmbeddedMessaging() {
+		try {
+			embeddedservice_bootstrap.settings.language = 'en_US'; // For example, enter 'en' or 'en-US'
+
+			embeddedservice_bootstrap.init(
+				'00DgL00000CdIXd',
+				'new_Lead_Agent',
+				'https://orgfarm-74bba57c71-dev-ed.develop.my.site.com/ESWnewLeadAgent1759853256038',
+				{
+					scrt2URL: 'https://orgfarm-74bba57c71-dev-ed.develop.my.salesforce-scrt.com'
+				}
+			);
+		} catch (err) {
+			console.error('Error loading Embedded Messaging: ', err);
+		}
+	};
+</script>
+<script type='text/javascript' src='https://orgfarm-74bba57c71-dev-ed.develop.my.site.com/ESWnewLeadAgent1759853256038/assets/js/bootstrap.min.js' onload='initEmbeddedMessaging()'></script>
+
 </body>
 </html>
